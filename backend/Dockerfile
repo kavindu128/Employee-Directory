@@ -1,10 +1,10 @@
-# Use official Node.js runtime as base image
-FROM node:22-alpine
+# Use Debian-based Node image (not Alpine)
+FROM node:22
 
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copy package files first for caching
 COPY package*.json ./
 
 # Install dependencies
@@ -13,11 +13,11 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# Expose the port the app runs on
+# Expose backend port
 EXPOSE 5000
 
-# Define environment variable
+# Environment variable
 ENV MONGODB_URI=mongodb://mongodb:27017/employeeDirectory
 
-# Start the application
+# Start the server
 CMD ["npm", "run", "dev"]

@@ -1,12 +1,23 @@
-FROM node:22-alpine
+# Use official Node.js runtime (Debian-based for better stability)
+FROM node:22
 
-WORKDIR /usr/src/app
+# Set working directory
+WORKDIR /app
 
+# Copy package files
 COPY package*.json ./
+
+# Install dependencies
 RUN npm install
 
+# Copy source code
 COPY . .
 
-EXPOSE 5173
+# Expose backend port
+EXPOSE 5000
 
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"]
+# Environment variable
+ENV MONGODB_URI=mongodb://mongodb:27017/employeeDirectory
+
+# Start the server
+CMD ["npm", "run", "dev"]
