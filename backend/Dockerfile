@@ -1,6 +1,5 @@
 # Use Debian-based Node image (not Alpine)
-FROM node:22
-
+FROM node:22-alpine
 # Set working directory
 WORKDIR /app
 
@@ -16,8 +15,6 @@ COPY . .
 # Expose backend port
 EXPOSE 5000
 
-# Environment variable
-ENV MONGODB_URI=mongodb://mongodb:27017/employeeDirectory
 
 # Start the server
 CMD ["npm", "run", "dev"]
