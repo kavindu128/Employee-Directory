@@ -61,7 +61,7 @@ const Home = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Basic validation
     if (!formData.name || !formData.position || !formData.department || !formData.email) {
       alert('Please fill in all fields');
@@ -69,7 +69,7 @@ const Home = () => {
     }
 
     setFormLoading(true);
-    
+
     try {
       if (isEditing) {
         // Update existing employee
@@ -80,7 +80,7 @@ const Home = () => {
         const response = await employeeAPI.create(formData);
         alert(response.data.message || 'Employee added successfully!');
       }
-      
+
       resetForm();
       fetchEmployees(); // Refresh the list
     } catch (error) {
@@ -135,11 +135,10 @@ const Home = () => {
       <Navbar />
       <div className="container mx-auto px-4 py-8">
         {/* Connection Status */}
-        <div className={`text-center mb-4 p-2 rounded ${
-          connectionStatus === 'connected' ? 'bg-green-100 text-green-800' : 
-          connectionStatus === 'disconnected' ? 'bg-red-100 text-red-800' : 
-          'bg-yellow-100 text-yellow-800'
-        }`}>
+        <div className={`text-center mb-4 p-2 rounded ${connectionStatus === 'connected' ? 'bg-green-100 text-green-800' :
+            connectionStatus === 'disconnected' ? 'bg-red-100 text-red-800' :
+              'bg-yellow-100 text-yellow-800'
+          }`}>
           {connectionStatus === 'connected' && '✅ Connected to server'}
           {connectionStatus === 'disconnected' && '❌ Cannot connect to server. Please check if backend is running on port 5000.'}
           {connectionStatus === 'checking' && 'Checking server connection...'}
@@ -219,29 +218,14 @@ const Home = () => {
         <div className="max-w-4xl mx-auto">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-2xl font-semibold">Employee List</h3>
-            <div className="space-x-2">
-              <button
-                onClick={checkConnection}
-                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-200"
-              >
-                Test Connection
-              </button>
-              <button
-                onClick={fetchEmployees}
-                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-200"
-                disabled={loading}
-              >
-                {loading ? 'Refreshing...' : 'Refresh'}
-              </button>
-            </div>
           </div>
-          
+
           {loading ? (
             <p className="text-center text-gray-500">Loading employees...</p>
           ) : employees.length === 0 ? (
             <p className="text-center text-gray-500">
-              {connectionStatus === 'connected' 
-                ? 'No employees added yet.' 
+              {connectionStatus === 'connected'
+                ? 'No employees added yet.'
                 : 'Cannot load employees. Please check server connection.'}
             </p>
           ) : (

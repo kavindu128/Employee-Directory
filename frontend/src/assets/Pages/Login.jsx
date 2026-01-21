@@ -21,15 +21,15 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    
+
     try {
       const response = await authAPI.login(formData);
-      
+
       // Store user data (you might want to use context or redux for this)
       localStorage.setItem('user', JSON.stringify(response.data.user));
-      
+
       // Navigate to home page
-      navigate('/');
+      navigate('/home');
     } catch (error) {
       alert(error.response?.data?.message || 'Login failed');
       console.error('Login error:', error);
@@ -46,10 +46,10 @@ const Login = () => {
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
             <label className="block text-sm font-medium text-gray-700">Email</label>
-            <input 
-              type="email" 
+            <input
+              type="email"
               name="email"
-              className="w-full p-2 border rounded mt-1" 
+              className="w-full p-2 border rounded mt-1"
               value={formData.email}
               onChange={handleChange}
               required
@@ -57,17 +57,17 @@ const Login = () => {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Password</label>
-            <input 
-              type="password" 
+            <input
+              type="password"
               name="password"
-              className="w-full p-2 border rounded mt-1" 
+              className="w-full p-2 border rounded mt-1"
               value={formData.password}
               onChange={handleChange}
               required
             />
           </div>
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="w-full bg-green-900 text-white py-2 rounded hover:bg-green-600 disabled:bg-gray-400 transition-colors"
             disabled={loading}
           >
