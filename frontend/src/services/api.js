@@ -1,8 +1,15 @@
 import axios from 'axios';
 
-// Create axios instance with base URL
+// Create axios instance with dynamic base URL
+const getBaseUrl = () => {
+  const hostname = window.location.hostname;
+  // If running locally, use localhost:5000
+  // If running on EC2 (or any other server), use that server's IP with port 5000
+  return `http://${hostname}:5000/api`;
+};
+
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: getBaseUrl(),
   headers: {
     'Content-Type': 'application/json',
   },
