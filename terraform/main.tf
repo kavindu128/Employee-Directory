@@ -76,6 +76,61 @@ resource "aws_instance" "employee_directory_server" {
               curl -SL https://github.com/docker/compose/releases/download/v2.24.5/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
               chmod +x /usr/local/bin/docker-compose
               ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+
+              # Create application directory
+              mkdir -p /home/ec2-user/app
+              cd /home/ec2-user/app
+
+              # Create docker-compose.yml
+              cat <<EOT > docker-compose.yml
+              version: '3.8'
+              services:
+                mongodb:
+                  image: mongo:6.0
+                  container_name: mongodb
+                  restart: always
+                  ports:
+                    - "27017:27017" # Exposed for debugging, can be removed for production safety
+                  volumes:
+                    - mongo-data:/data/db
+                  networks:
+                    - app-network
+
+                backend:
+                  image: ${var.docker_username}/employee-backend:latest
+                  container_name: backend
+                  restart: always
+                  ports:
+                    - "5000:5000"
+                  environment:
+                    - MONGO_URI=mongodb://mongodb:27017/employeeDirectory
+                    - PORT=5000
+                  depends_on:
+                    - mongodb
+                  networks:
+                    - app-network
+
+                frontend:
+                  image: ${var.docker_username}/employee-frontend:latest
+                  container_name: frontend
+                  restart: always
+                  ports:
+                    - "5173:5173"
+                  depends_on:
+                    - backend
+                  networks:
+                    - app-network
+
+              volumes:
+                mongo-data:
+
+              networks:
+                app-network:
+                  driver: bridge
+              EOT
+
+              # Start the application
+              docker-compose up -d
               EOF
 
   tags = {
