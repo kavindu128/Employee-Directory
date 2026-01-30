@@ -21,12 +21,12 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    
+
     try {
       const response = await authAPI.signup(formData);
       alert('Account created successfully!');
       // Redirect to login page
-      window.location.href = '/login';
+      window.location.href = '/home';
     } catch (error) {
       alert(error.response?.data?.message || 'Signup failed');
       console.error('Signup error:', error);
@@ -43,10 +43,10 @@ const Signup = () => {
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
             <label>Name</label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               name="name"
-              className="w-full p-2 border rounded" 
+              className="w-full p-2 border rounded"
               value={formData.name}
               onChange={handleChange}
               required
@@ -54,10 +54,10 @@ const Signup = () => {
           </div>
           <div>
             <label>Email</label>
-            <input 
-              type="email" 
+            <input
+              type="email"
               name="email"
-              className="w-full p-2 border rounded" 
+              className="w-full p-2 border rounded"
               value={formData.email}
               onChange={handleChange}
               required
@@ -65,17 +65,17 @@ const Signup = () => {
           </div>
           <div>
             <label>Password</label>
-            <input 
-              type="password" 
+            <input
+              type="password"
               name="password"
-              className="w-full p-2 border rounded" 
+              className="w-full p-2 border rounded"
               value={formData.password}
               onChange={handleChange}
               required
             />
           </div>
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="w-full bg-green-900 text-white py-2 rounded hover:bg-green-600 disabled:bg-gray-400"
             disabled={loading}
           >
