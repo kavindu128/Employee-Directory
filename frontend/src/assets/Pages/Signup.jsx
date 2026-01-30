@@ -1,5 +1,5 @@
 import Navbar from '../Components/Navbar.jsx';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { authAPI } from '../../services/api.js';
 
@@ -10,6 +10,7 @@ const Signup = () => {
     password: ''
   });
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -26,7 +27,7 @@ const Signup = () => {
       const response = await authAPI.signup(formData);
       alert('Account created successfully!');
       // Redirect to login page
-      window.location.href = '/';
+      navigate('/');
     } catch (error) {
       alert(error.response?.data?.message || 'Signup failed');
       console.error('Signup error:', error);
