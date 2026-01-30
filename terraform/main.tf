@@ -13,7 +13,7 @@ provider "aws" {
 
 # 1. Create a Security Group
 resource "aws_security_group" "app_sg" {
-  name        = "employee-app-sg"
+  name        = "employee-app-sg-v2"
   description = "Allow Web and SSH traffic"
 
   ingress {
