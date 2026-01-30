@@ -55,18 +55,20 @@ pipeline {
         stage('Provision AWS Infrastructure') {
             steps {
                 dir('terraform') {
-                    // We use the Secret Text credentials we created earlier
+                    // Use environment variables directly in the shell context
                     withCredentials([
                         string(credentialsId: 'aws-access-key', variable: 'AWS_ACCESS_KEY_ID'),
                         string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')
                     ]) {
                         // Initialize Terraform
                         sh 'terraform init'
-
                         // Apply Terraform
-                        sh "terraform apply -auto-approve -var='docker_username=${DOCKER_HUB_USER}'"
-                        
-                        // NO CAT COMMAND HERE - IT WAS REMOVED
+                        // Explicitly export the variables just in case
+                        sh """
+                            export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+                            export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+                            terraform apply -auto-approve -var='docker_username=${DOCKER_HUB_USER}'
+                        """
                     }
                 }
             }
