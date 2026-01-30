@@ -9,9 +9,9 @@ const App = () => (
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/home" element={
-        <ProtectedRoute>
+        // <ProtectedRoute>
           <Home />
-        </ProtectedRoute>
+        // </ProtectedRoute>
       } />
       <Route path="/signup" element={<Signup />} />
     </Routes>
