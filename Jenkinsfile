@@ -66,13 +66,7 @@ pipeline {
 
                         // Apply Terraform
                         sh "terraform apply -auto-approve -var='docker_username=${DOCKER_HUB_USER}'"
-                        
-                        // PRINT THE KEY SO USER CAN SAVE IT
-                        echo "---------------------------------------------------"
-                        echo "       COPY THE KEY BELOW TO A FILE (my-key.pem)    "
-                        echo "---------------------------------------------------"
-                        sh "cat employee-app-key.pem"
-                        echo "---------------------------------------------------"
+
                     }
                 }
             }
