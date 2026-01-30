@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     environment {
-        // REPLACE WITH YOUR DOCKER HUB USERNAME
+        // YOUR DOCKER HUB USERNAME
         DOCKER_HUB_USER = 'kavindu128' 
         
         // Docker Image Names
         IMAGE_FRONTEND = "${DOCKER_HUB_USER}/employee-frontend"
         IMAGE_BACKEND  = "${DOCKER_HUB_USER}/employee-backend"
         
-        // Credentials IDs (Must match Jenkins Dashboard IDs)
+        // This MUST match the ID in Jenkins -> Manage Jenkins -> Credentials
         DOCKER_CREDS_ID = 'dockerhub'
     }
 
@@ -20,10 +20,20 @@ pipeline {
             }
         }
 
+        stage('Login to Docker') {
+            steps {
+               script {
+                     // We LOGIN FIRST to avoid 401 Unauthorized errors when pulling base images (node:alpine)
+                    withCredentials([usernamePassword(credentialsId: DOCKER_CREDS_ID, passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
+                        sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                    }
+               }
+            }
+        }
+
         stage('Build Docker Images') {
             steps {
                 script {
-                    // Make sure you have folders named 'backend' and 'frontend' in your git repo
                     echo 'building backend...'
                     sh "docker build -t ${IMAGE_BACKEND}:latest ./backend"
                     
@@ -36,11 +46,9 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: DOCKER_CREDS_ID, passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
-                        sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-                        sh "docker push ${IMAGE_BACKEND}:latest"
-                        sh "docker push ${IMAGE_FRONTEND}:latest"
-                    }
+                    // We are already logged in from the previous stage, but it's safe to run again or just push
+                    sh "docker push ${IMAGE_BACKEND}:latest"
+                    sh "docker push ${IMAGE_FRONTEND}:latest"
                 }
             }
         }
@@ -57,7 +65,6 @@ pipeline {
                         sh 'terraform init'
 
                         // Apply Terraform
-                        // We pass the Docker User so the EC2 knows which image to pull
                         sh "terraform apply -auto-approve -var='docker_username=${DOCKER_HUB_USER}'"
                     }
                 }
