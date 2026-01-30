@@ -7,11 +7,10 @@ pipeline {
         
         // Docker Image Names
         IMAGE_FRONTEND = "${DOCKER_HUB_USER}/employee-frontend"
-        IMAGE_BACKEND = "${DOCKER_HUB_USER}/employee-backend"
+        IMAGE_BACKEND  = "${DOCKER_HUB_USER}/employee-backend"
         
-        // Credentials IDs configured in Jenkins
-        DOCKER_CREDS_ID = 'docker-hub-credentials'
-        AWS_CREDS_ID = 'aws-credentials'
+        // Credentials IDs (Must match Jenkins Dashboard IDs)
+        DOCKER_CREDS_ID = 'dockerhub'
     }
 
     stages {
@@ -24,6 +23,7 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 script {
+                    // Make sure you have folders named 'backend' and 'frontend' in your git repo
                     echo 'building backend...'
                     sh "docker build -t ${IMAGE_BACKEND}:latest ./backend"
                     
@@ -48,29 +48,20 @@ pipeline {
         stage('Provision AWS Infrastructure') {
             steps {
                 dir('terraform') {
+                    // We use the Secret Text credentials we created earlier
                     withCredentials([
-                        string(credentialsId: 'aws-access-key-id', variable: 'AWS_ACCESS_KEY_ID'),
-                        string(credentialsId: 'aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
+                        string(credentialsId: 'aws-access-key', variable: 'AWS_ACCESS_KEY_ID'),
+                        string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')
                     ]) {
-                        // Init Terraform
+                        // Initialize Terraform
                         sh 'terraform init'
 
                         // Apply Terraform
-                        // We pass the docker username variable and accept the plan automatically
-                        // NOTE: Ensure your Jenkins agent has Terraform installed
+                        // We pass the Docker User so the EC2 knows which image to pull
                         sh "terraform apply -auto-approve -var='docker_username=${DOCKER_HUB_USER}'"
                     }
                 }
             }
-        }
-    }
-
-    post {
-        success {
-            echo '✅ Pipeline succeeded! Infrastructure is provisioning.'
-        }
-        failure {
-            echo '❌ Pipeline failed.'
         }
     }
 }

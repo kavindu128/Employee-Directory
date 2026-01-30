@@ -63,7 +63,7 @@ resource "tls_private_key" "example" {
 }
 
 resource "aws_key_pair" "generated_key" {
-  key_name   = "employee-app-key"
+  key_name   = "Employee"
   public_key = tls_private_key.example.public_key_openssh
 }
 
@@ -75,8 +75,8 @@ resource "local_file" "private_key" {
 
 # 3. Create EC2 Instance
 resource "aws_instance" "app_server" {
-  ami           = "ami-053b0d53c279acc90" # Amazon Linux 2023 (US-EAST-1) - Update if region changes
-  instance_type = "t2.micro"
+  ami           = "ami-024ee5112d03921e2" # Amazon Linux 2023 (US-EAST-1) - Update if region changes
+  instance_type = "t3.micro"
   key_name      = aws_key_pair.generated_key.key_name
 
   vpc_security_group_ids = [aws_security_group.app_sg.id]
