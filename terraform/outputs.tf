@@ -5,7 +5,7 @@ output "instance_public_ip" {
 
 output "ssh_connection_string" {
   description = "Command to SSH into the instance"
-  value       = "ssh -i employee-app-key.pem ec2-user@${aws_instance.app_server.public_ip}"
+  value       = "ssh ec2-user@${aws_instance.app_server.public_ip}"
 }
 
 output "app_url" {

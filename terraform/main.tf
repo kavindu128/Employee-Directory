@@ -57,20 +57,10 @@ resource "aws_security_group" "app_sg" {
 }
 
 # 2. Setup SSH Key (Optional: Generates a new key pair for access)
-resource "tls_private_key" "example" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
-}
-
+# 2. Setup SSH Key (Use your local public key)
 resource "aws_key_pair" "generated_key" {
-  key_name   = "Employee"
-  public_key = tls_private_key.example.public_key_openssh
-}
-
-resource "local_file" "private_key" {
-  content  = tls_private_key.example.private_key_pem
-  filename = "${path.module}/employee-app-key.pem"
-  file_permission = "0400"
+  key_name   = "kavindu-laptop-key"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCMDtmIGZ26k+BGA0ajL30wUy7Almhyuldgfn427KWBogYDa5Xp2fOF0IHMldryj4PjX7s5xsLVT3q5VNrnREve2CLrIwfT+nUovB03szwkB8OYZv477B18w+3I8lQEhLxBvL8V9T6pp1icrUKN0TdQlCo+fdn19KySVFM258S1lOvlesIMxQc9gxwfgUkxUNqiiLgDVz3mQFteSn6QvGUIGbRE6dVfwwoP1IIN6az5oGqm0CBfl7Bcd5KWeQd3MwOF6hhoYuhBiMlaaI1ygIuz5DEkeBZ9DwYx4rcFPyn3JlwAY41B+UUVIjrULLmW8isfc4z5bIIDUll5VVkGe+JXBFqFdP4DbT0RLNpmI5Zek4dCT/VoM5wAHYY2UoqW9S9YeGsGc88/8taY9JP68P7wWz5h7cwkBQzRrouGm0h47SHGDjfu1yo03aYhZQ1BjPHEFd8hPUWQSPCeaVzjUKZUr33q5hosQgOYM8ASUewCZCkdFsCdqorhnh2Q+3Hir5PWQIv6TM9LZ1sm0Ew/FHlLGs57SXdcje727irZDAaTaFNzZ41dAu44NpDdoGTbS+leg5t4YdrNFwbfY8jr1PrFYpKyinX0FNEV3zP1UiOPhWB9a9mNupVV+Tbt5DfNfIo+t7GcdRhPrs6O+UJxoWC+GWKCKBkvAnWH+XxWtww+hw== root@DESKTOP-AJGBTVO"
 }
 
 # 3. Create EC2 Instance
