@@ -111,6 +111,7 @@ resource "aws_instance" "app_server" {
                     - "5000:5000"
                   environment:
                     - MONGO_URI=mongodb://mongodb:27017/employeeDirectory
+                  restart: always
                   depends_on:
                     - mongodb
                 mongodb:
