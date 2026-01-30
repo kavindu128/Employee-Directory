@@ -23,7 +23,7 @@ pipeline {
         stage('Login to Docker') {
             steps {
                script {
-                     // We LOGIN FIRST to avoid 401 Unauthorized errors when pulling base images (node:alpine)
+                     // We LOGIN FIRST to avoid 401 Unauthorized errors when pulling base images
                     withCredentials([usernamePassword(credentialsId: DOCKER_CREDS_ID, passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
                         sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
                     }
@@ -46,7 +46,6 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 script {
-                    // We are already logged in from the previous stage, but it's safe to run again or just push
                     sh "docker push ${IMAGE_BACKEND}:latest"
                     sh "docker push ${IMAGE_FRONTEND}:latest"
                 }
@@ -66,7 +65,8 @@ pipeline {
 
                         // Apply Terraform
                         sh "terraform apply -auto-approve -var='docker_username=${DOCKER_HUB_USER}'"
-
+                        
+                        // NO CAT COMMAND HERE - IT WAS REMOVED
                     }
                 }
             }
