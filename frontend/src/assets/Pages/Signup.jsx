@@ -26,7 +26,7 @@ const Signup = () => {
       const response = await authAPI.signup(formData);
       alert('Account created successfully!');
       // Redirect to login page
-      window.location.href = '/home';
+      window.location.href = '/Home';
     } catch (error) {
       alert(error.response?.data?.message || 'Signup failed');
       console.error('Signup error:', error);
