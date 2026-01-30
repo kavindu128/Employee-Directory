@@ -26,7 +26,7 @@ const Signup = () => {
       const response = await authAPI.signup(formData);
       alert('Account created successfully!');
       // Redirect to login page
-      window.location.href = '/home';
+      window.location.href = '/';
     } catch (error) {
       alert(error.response?.data?.message || 'Signup failed');
       console.error('Signup error:', error);
@@ -83,7 +83,7 @@ const Signup = () => {
           </button>
         </form>
         <div className="text-center mt-4 text-sm text-gray-600">
-          <Link to="/login">Already have an account?</Link>
+          <Link to="/">Already have an account?</Link>
         </div>
       </div>
     </>
