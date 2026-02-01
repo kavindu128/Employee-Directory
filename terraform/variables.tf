@@ -22,3 +22,8 @@ variable "docker_username" {
   description = "Docker Hub username"
   type        = string
 }
+
+variable "private_key_path" {
+  description = "Path to the SSH private key"
+  type        = string
+}

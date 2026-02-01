@@ -148,7 +148,7 @@ resource "null_resource" "app_update" {
   connection {
     type        = "ssh"
     user        = "ec2-user"
-    private_key = file("${path.module}/employeekeypair.pem")
+    private_key = file(var.private_key_path)
     host        = aws_instance.employee_directory_server.public_ip
   }
 
