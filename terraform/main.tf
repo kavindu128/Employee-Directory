@@ -137,3 +137,26 @@ resource "aws_instance" "employee_directory_server" {
     Name = "EmployeeDirectory-Server"
   }
 }
+
+resource "null_resource" "app_update" {
+  triggers = {
+    always_run = timestamp()
+  }
+
+  depends_on = [aws_instance.employee_directory_server]
+
+  connection {
+    type        = "ssh"
+    user        = "ec2-user"
+    private_key = file("${path.module}/employeekeypair.pem")
+    host        = aws_instance.employee_directory_server.public_ip
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "cd /home/ec2-user/app",
+      "docker-compose pull",
+      "docker-compose up -d"
+    ]
+  }
+}
