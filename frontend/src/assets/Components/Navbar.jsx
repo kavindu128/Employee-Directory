@@ -10,7 +10,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-green-900 text-white px-6 py-4 flex justify-between items-center">
+    <nav className="bg-blue-900 text-white px-6 py-4 flex justify-between items-center">
       <h1 className="text-xl font-bold">EMPLOYEE DIRECTORY</h1>
       <div className="space-x-4">
         <Link to="/home" className="hover:underline">Home</Link>
