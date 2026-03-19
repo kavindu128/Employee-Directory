@@ -175,6 +175,7 @@ resource "null_resource" "app_update" {
     inline = [
       "echo 'Waiting for cloud-init setup to finish...'",
       "while [ ! -f /usr/local/bin/docker-compose ]; do sleep 5; done",
+      "if [ ! -f /swapfile ]; then sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile && echo '/swapfile swap swap defaults 0 0' | sudo tee -a /etc/fstab; fi",
       "cd /home/ec2-user/app",
       "docker-compose pull",
       "docker-compose up -d"
