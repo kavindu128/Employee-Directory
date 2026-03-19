@@ -71,10 +71,21 @@ resource "aws_instance" "employee_directory_server" {
 
   vpc_security_group_ids = [aws_security_group.employee_directory_sg.id]
 
+  root_block_device {
+    volume_size = 16
+    volume_type = "gp3"
+  }
+
   user_data = <<-EOF
               #!/bin/bash
+              # Create a 2GB swap file to prevent OOM errors on t3.micro
+              fallocate -l 2G /swapfile
+              chmod 600 /swapfile
+              mkswap /swapfile
+              swapon /swapfile
+              echo "/swapfile swap swap defaults 0 0" >> /etc/fstab
+
               # Update and install Docker
-              dnf update -y
               dnf install -y docker
               systemctl enable docker
               systemctl start docker
@@ -162,6 +173,8 @@ resource "null_resource" "app_update" {
 
   provisioner "remote-exec" {
     inline = [
+      "echo 'Waiting for cloud-init setup to finish...'",
+      "while [ ! -f /usr/local/bin/docker-compose ]; do sleep 5; done",
       "cd /home/ec2-user/app",
       "docker-compose pull",
       "docker-compose up -d"
