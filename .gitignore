@@ -1,6 +1,6 @@
 # Terraform
 .terraform/
-*.tfstate
+# We are currently committing the main tfstate so Jenkins can track instance updates
 *.tfstate.backup
 *.tfvars
 .terraform.lock.hcl
