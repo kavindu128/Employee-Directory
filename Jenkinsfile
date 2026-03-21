@@ -52,23 +52,16 @@ pipeline {
             }
         }
 
-        stage('Provision AWS Infrastructure') {
+        stage('Deploy App Update') {
             steps {
                 dir('terraform') {
-                    // Use environment variables directly in the shell context
                     withCredentials([
-                        string(credentialsId: 'aws-access-key', variable: 'AWS_ACCESS_KEY_ID'),
-                        string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY'),
                         file(credentialsId: 'ec2-ssh-key', variable: 'SSH_KEY_FILE')
                     ]) {
-                        // Initialize Terraform
-                        sh 'terraform init'
-                        
-                        // Apply Terraform
+                        // Directly and securely SSH into your LIVE instance to update it without destroying it!
                         sh """
-                            export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-                            export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-                            terraform apply -auto-approve -var='docker_username=${DOCKER_HUB_USER}' -var="private_key_path=${SSH_KEY_FILE}"
+                            chmod 400 ${SSH_KEY_FILE}
+                            ssh -o StrictHostKeyChecking=no -i "${SSH_KEY_FILE}" ec2-user@44.200.69.194 'cd /home/ec2-user/app && docker-compose pull && docker-compose up -d'
                         """
                     }
                 }
