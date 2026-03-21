@@ -131,165 +131,158 @@ const Home = () => {
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 font-sans pb-12">
       <Navbar />
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Connection Status */}
-        <div className={`text-center mb-4 p-2 rounded ${connectionStatus === 'connected' ? 'bg-green-100 text-green-800' :
-            connectionStatus === 'disconnected' ? 'bg-red-100 text-red-800' :
-              'bg-yellow-100 text-yellow-800'
+        <div className={`text-center mb-8 p-3 rounded-2xl shadow-sm text-sm font-medium transition-all ${connectionStatus === 'connected' ? 'bg-green-100/80 text-green-800' :
+            connectionStatus === 'disconnected' ? 'bg-red-100/80 text-red-800' :
+              'bg-yellow-100/80 text-yellow-800'
           }`}>
-          {connectionStatus === 'connected' && '✅ Connected to server'}
-          {connectionStatus === 'disconnected' && '❌ Cannot connect to server. Please check if backend is running on port 5000.'}
+          {connectionStatus === 'connected' && '✨ Live Server Connection Active'}
+          {connectionStatus === 'disconnected' && '❌ Cannot connect to server. Please check your connection.'}
           {connectionStatus === 'checking' && 'Checking server connection...'}
         </div>
 
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-semibold">Welcome to Employee Directory</h2>
-          <p className="mt-4 text-gray-600">Manage your employees efficiently.</p>
-        </div>
-
-        {/* Employee Form */}
-        <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-6 mb-8">
-          <h3 className="text-xl font-semibold mb-4">
-            {isEditing ? 'Edit Employee' : 'Add New Employee'}
-          </h3>
-          <form onSubmit={handleSubmit}>
-            <div className="space-y-4">
-              <input
-                type="text"
-                name="name"
-                placeholder="Full Name"
-                value={formData.name}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-              <input
-                type="text"
-                name="position"
-                placeholder="Position"
-                value={formData.position}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-              <input
-                type="text"
-                name="department"
-                placeholder="Department"
-                value={formData.department}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          {/* Employee Form (Left Column) */}
+          <div className="lg:col-span-1">
+            <div className="bg-white/90 backdrop-blur-lg rounded-3xl shadow-xl p-8 border border-white sticky top-8 transition-all hover:shadow-2xl">
+              <h3 className="text-2xl font-extrabold text-gray-800 mb-6 tracking-tight">
+                {isEditing ? 'Update Details' : 'New Member'}
+              </h3>
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1 ml-1">Full Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all duration-200"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1 ml-1">Position</label>
+                  <input
+                    type="text"
+                    name="position"
+                    value={formData.position}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all duration-200"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1 ml-1">Department</label>
+                  <input
+                    type="text"
+                    name="department"
+                    value={formData.department}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all duration-200"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1 ml-1">Email Address</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all duration-200"
+                    required
+                  />
+                </div>
+                <div className="flex space-x-3 pt-4">
+                  <button
+                    type="submit"
+                    className="flex-1 bg-gradient-to-r from-indigo-500 to-blue-600 text-white font-bold py-3 px-4 rounded-xl hover:opacity-90 transform active:scale-95 transition-all duration-200 shadow-md disabled:opacity-50"
+                    disabled={formLoading || connectionStatus !== 'connected'}
+                  >
+                    {formLoading ? 'Saving...' : (isEditing ? 'Save Changes' : 'Add Person')}
+                  </button>
+                  {isEditing && (
+                    <button
+                      type="button"
+                      onClick={resetForm}
+                      className="flex-none bg-white border border-gray-300 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-50 transform active:scale-95 transition-all duration-200"
+                    >
+                      Cancel
+                    </button>
+                  )}
+                </div>
+              </form>
             </div>
-            <div className="flex space-x-2 mt-6">
-              <button
-                type="submit"
-                className="flex-1 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200 disabled:bg-blue-300"
-                disabled={formLoading || connectionStatus !== 'connected'}
-              >
-                {formLoading ? 'Saving...' : (isEditing ? 'Update Employee' : 'Add Employee')}
-              </button>
-              {isEditing && (
-                <button
-                  type="button"
-                  onClick={resetForm}
-                  className="flex-1 bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition duration-200"
-                >
-                  Cancel
-                </button>
-              )}
-            </div>
-          </form>
-        </div>
-
-        {/* Employee List */}
-        <div className="max-w-4xl mx-auto">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-2xl font-semibold">Employee List</h3>
           </div>
 
-          {loading ? (
-            <p className="text-center text-gray-500">Loading employees...</p>
-          ) : employees.length === 0 ? (
-            <p className="text-center text-gray-500">
-              {connectionStatus === 'connected'
-                ? 'No employees added yet.'
-                : 'Cannot load employees. Please check server connection.'}
-            </p>
-          ) : (
-            <div className="bg-white shadow-md rounded-lg overflow-hidden">
-              <table className="w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Name
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Position
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Department
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Email
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {employees.map(employee => (
-                    <tr key={employee._id}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        {employee.name}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {employee.position}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+          {/* Employee List (Right Column) */}
+          <div className="lg:col-span-2">
+            {loading ? (
+              <div className="flex justify-center items-center h-64">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+              </div>
+            ) : employees.length === 0 ? (
+              <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-12 text-center border border-white border-dashed">
+                <h3 className="text-xl font-bold text-gray-700 mb-2">No Profiles Found</h3>
+                <p className="text-gray-500">
+                  {connectionStatus === 'connected'
+                    ? "It's quiet here. Add your first team member using the form!"
+                    : "Having trouble connecting to the database."}
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {employees.map(employee => (
+                  <div key={employee._id} className="bg-white/90 backdrop-blur-lg rounded-3xl p-6 shadow-lg border border-white hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <h4 className="text-xl font-extrabold text-gray-900">{employee.name}</h4>
+                        <p className="text-sm font-semibold text-indigo-600">{employee.position}</p>
+                      </div>
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800">
                         {employee.department}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      </span>
+                    </div>
+                    
+                    <div className="mt-4 pt-4 border-t border-gray-100">
+                      <div className="flex items-center text-sm text-gray-600 mb-2">
+                        <svg className="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                         {employee.email}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                        <button
-                          onClick={() => handleEdit(employee)}
-                          className="text-indigo-600 hover:text-indigo-900"
-                          disabled={connectionStatus !== 'connected'}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => handleDelete(employee._id)}
-                          className="text-red-600 hover:text-red-900"
-                          disabled={connectionStatus !== 'connected'}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                      </div>
+                      <div className="flex items-center text-sm text-gray-600">
+                        <svg className="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                        Contact Details Saved
+                      </div>
+                    </div>
+
+                    <div className="mt-6 flex space-x-3">
+                      <button
+                        onClick={() => handleEdit(employee)}
+                        className="flex-1 bg-gray-50 text-indigo-600 font-semibold py-2 px-4 rounded-xl hover:bg-indigo-50 transition-colors duration-200"
+                        disabled={connectionStatus !== 'connected'}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(employee._id)}
+                        className="flex-1 bg-red-50 text-red-600 font-semibold py-2 px-4 rounded-xl hover:bg-red-100 transition-colors duration-200"
+                        disabled={connectionStatus !== 'connected'}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

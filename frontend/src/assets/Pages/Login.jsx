@@ -39,46 +39,53 @@ const Login = () => {
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 font-sans pb-12">
       <Navbar />
-      <div className="max-w-md mx-auto mt-20 p-6 border rounded-lg shadow">
-        <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
-            <input
-              type="email"
-              name="email"
-              className="w-full p-2 border rounded mt-1"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
+      <div className="flex justify-center items-center mt-24 px-4">
+        <div className="bg-white/90 backdrop-blur-lg rounded-3xl shadow-soft w-full max-w-md p-8 border border-white shadow-xl transition-all duration-300 hover:shadow-2xl">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-extrabold text-gray-800 tracking-tight">Welcome Back</h2>
+            <p className="text-gray-500 mt-2 text-sm">Please enter your details to sign in.</p>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
-            <input
-              type="password"
-              name="password"
-              className="w-full p-2 border rounded mt-1"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
+          <form className="space-y-5" onSubmit={handleSubmit}>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 ml-1 mb-1">Email Address</label>
+              <input
+                type="email"
+                name="email"
+                className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all duration-200"
+                placeholder="you@company.com"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 ml-1 mb-1">Password</label>
+              <input
+                type="password"
+                name="password"
+                className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all duration-200"
+                placeholder="••••••••"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-r from-indigo-500 to-blue-600 text-white font-bold py-3 px-4 rounded-xl hover:opacity-90 transform active:scale-95 transition-all duration-200 shadow-md disabled:opacity-50"
+              disabled={loading}
+            >
+              {loading ? 'Signing In...' : 'Sign In'}
+            </button>
+          </form>
+          <div className="text-center mt-8 text-sm font-medium text-gray-500">
+             <Link to="/signup" className="text-indigo-600 hover:text-indigo-800 hover:underline transition-colors">Create an account</Link>
           </div>
-          <button
-            type="submit"
-            className="w-full bg-green-900 text-white py-2 rounded hover:bg-green-600 disabled:bg-gray-400 transition-colors"
-            disabled={loading}
-          >
-            {loading ? 'Signing In...' : 'Sign In'}
-          </button>
-        </form>
-        <div className="text-center mt-4 text-sm text-gray-600">
-          <Link to="#" className="text-green-900 hover:underline">test</Link> | <Link to="/signup" className="text-green-900 hover:underline">Create account</Link>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
