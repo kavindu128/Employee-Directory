@@ -52,7 +52,7 @@ pipeline {
             }
         }
 
-        stage('Deploy App Update') {
+        stage('Provision AWS..') {
             steps {
                 dir('terraform') {
                     withCredentials([
